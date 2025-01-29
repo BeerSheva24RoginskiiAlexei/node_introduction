@@ -1,5 +1,9 @@
 import WageEmployee from "./WageEmployee.mjs";
+import Employee from "./Employee.mjs";
 export default class SalesPerson extends WageEmployee {
+  static {
+    Employee.classMap.SalesPerson = new SalesPerson();
+  }
   constructor(
     id,
     department,
@@ -7,9 +11,10 @@ export default class SalesPerson extends WageEmployee {
     wage,
     hours,
     percent = 0,
-    sales = 0
+    sales = 0,
+    className
   ) {
-    super(id, department, basicSalary, wage, hours);
+    super(id, department, basicSalary, wage, hours, className ?? "SalesPerson");
     this.percent = percent;
     this.sales = sales;
   }

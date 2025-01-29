@@ -53,7 +53,61 @@ describe("creating, getters, computeSalary tests", () => {
   });
   it("setPrototype", () => {
     const obj = { id: 123, department: "QA", basicSalary: 10000, factor: 2 };
-    Object.setPrototypeOf(obj, new Manager());
+    
+    Object.setPrototypeOf(obj,new Manager());
     expect(obj.computeSalary()).toBe(20000);
   });
+});
+describe("JSON serialization / deserialization Employees objectss", () => {
+    const empl = new Employee(123, "QA", 10000);
+    const wageEmpl = new WageEmployee(123, "QA", 10000, 100, 100);
+    const salesPerson = new SalesPerson(123, "QA", 10000, 100, 100, 0.1, 100000 );
+    const manager = new Manager(123, "QA", 10000, 2);
+
+  it("Employee JSON serialization", () => {
+    
+    const jsonEmpl = JSON.stringify(empl);
+    expect(jsonEmpl.indexOf("Employee")).toBeGreaterThan(-1);
+  });
+  it("WageEmployee JSON serialization", () => {
+   
+    const jsonEmpl = JSON.stringify(wageEmpl);
+    expect(jsonEmpl.indexOf("WageEmployee")).toBeGreaterThan(-1);
+  });
+  it("SalesPerson JSON serialization", () => {
+    
+    const jsonEmpl = JSON.stringify(salesPerson);
+    expect(jsonEmpl.indexOf("SalesPerson")).toBeGreaterThan(-1);
+  });
+  it("Manager JSON serialization", () => {
+    
+    const jsonEmpl = JSON.stringify(manager);
+    expect(jsonEmpl.indexOf("Manager")).toBeGreaterThan(-1);
+  });
+  it ("Employee deserialization", () => {
+    const jsonStr = JSON.stringify(empl);
+    const obj = JSON.parse(jsonStr);
+    Object.setPrototypeOf(obj, Employee.classMap[obj.className]);
+    expect(obj.computeSalary()).toBe(10000)
+  })
+  it ("WageEmployee deserialization", () => {
+    const jsonStr = JSON.stringify(wageEmpl);
+    const obj = JSON.parse(jsonStr);
+    Object.setPrototypeOf(obj, Employee.classMap[obj.className]);
+    expect(obj.computeSalary()).toBe(20000)
+  })
+  it ("SalesPerson deserialization", () => {
+    const jsonStr = JSON.stringify(salesPerson);
+    const obj = JSON.parse(jsonStr);
+    Object.setPrototypeOf(obj, Employee.classMap[obj.className]);
+    expect(obj.computeSalary()).toBe(20100)
+  })
+  it ("Nanager deserialization", () => {
+    const jsonStr = JSON.stringify(manager);
+    const obj = JSON.parse(jsonStr);
+    Object.setPrototypeOf(obj, Employee.classMap[obj.className]);
+    expect(obj.computeSalary()).toBe(20000)
+  })
+
+
 });
